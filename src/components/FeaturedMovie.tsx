@@ -1,24 +1,9 @@
 import React from "react";
+import { MovieInfo } from "../Tmdb";
 import styles from './featuredmovie.module.scss'
 
-type Genre =  {
-    name: string;
-}
-
-export type Objeto = {
-    first_air_date: string;
-    genres: Genre [];
-    overview: string;
-    id: number;
-    name: string;
-    vote_average: number;
-    number_of_seasons: number;
-    backdrop_path: string;
-}
-
 type Item = {
-    item: Objeto ;
-
+    item: MovieInfo ;
 }
 
 export default ({item}:Item) => {
