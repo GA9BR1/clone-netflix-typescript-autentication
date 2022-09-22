@@ -3,14 +3,16 @@ import { useState } from 'react'
 import FeaturedMovie from './components/FeaturedMovie'
 import Header from './components/Header'
 import styles from './styles.module.scss'
-import Tmdb, {Category, MovieInfo} from './Tmdb'
+import Tmdb from './Tmdb'
+import {Objeto} from './components/FeaturedMovie'
+import {Objeto1} from './components/MovieRow'
 import MovieRow from './components/MovieRow'
 
 
 
 export default () => {
-  const [movieList, setMovieList] = useState<Category[]>([]);
-  const [featuredData, setFeaturedData] = useState<MovieInfo | null>(null);
+  const [movieList, setMovieList] = useState<Array<{title: string; items: Objeto1}>>([]);
+  const [featuredData, setFeaturedData] = useState<Objeto | null>(null);
   const [blackHeader, setBlackHeader] = useState(false);
 
   useEffect(()=> {
@@ -20,9 +22,9 @@ export default () => {
       setMovieList(list);
 
       // Pegando o filme principal aleatoriamente.
-      let originals = list.filter(i=>i.slug === 'originals');
-      let randomChosen = Math.floor(Math.random() * (originals[0].items.length - 1));
-      let chosen = originals[0].items[randomChosen];
+      let originals = list.filter(i=>i.slug === 'originals')
+      let randomChosen = Math.floor(Math.random() * (originals[0].items.results.length - 1))
+      let chosen = originals[0].items.results[randomChosen];
       let chosenInfo = await Tmdb.getMovieInfo({movieId: chosen.id, tipo: 'tv'});
 
       setFeaturedData(chosenInfo);

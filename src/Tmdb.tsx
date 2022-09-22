@@ -11,64 +11,23 @@ const API_BASE = 'https://api.themoviedb.org/3';
 - romance
 - documentários
 */
-// type MovieInfo = {
-//     movieId: number;
-//     tipo: string;
-// }
+type MovieInfo = {
+    movieId: number;
+    tipo: string;
+}
 
 type HomeList = {
     endpoint: string;
 }
 
-export type Category = {
-    title: string;
-    slug: string;
-    items: Movie[];
-}
-
-export type Movie = {
-    id: number;
-    name: string;
-    original_name: string;
-    poster_path: string; 
-    first_air_date: string;
-    overview: string;
-    vote_average: number;
-    backdrop_path: string;
-}
-
-type Genre =  {
-    id: number;
-    name: string;
-}
-
-export type MovieInfo = Movie & {
-    genres: Genre []; 
-    number_of_seasons: number;    
-}
-
-type MovieResponse = {
-    // page: number;
-    // total_pages: number;
-    // total_results: number;
-    results: Movie[]
-}
-
 const basicFetch = async ({endpoint}:HomeList) => {
-    const response = await fetch(`${API_BASE}${endpoint}`);
-    const resp: MovieResponse = await response.json();
-    // const json = await response.json();
-    return resp.results
-}
-
-const fetchMovieInfo = async ({endpoint}:HomeList) => {
-    const response = await fetch(`${API_BASE}${endpoint}`);
-    const resp: MovieInfo = await response.json();
-    return resp
+    const req = await fetch(`${API_BASE}${endpoint}`);
+    const json = await req.json();
+    return json
 }
 
 export default {
-    getHomeList: async (): Promise<Category[]> => {
+    getHomeList: async () => {
         return [
             {
                 slug: 'originals',
@@ -112,17 +71,17 @@ export default {
             },
         ]
     },
-    getMovieInfo: async ({movieId, tipo}: {movieId: number, tipo: string}) => {
+    getMovieInfo: async ({movieId, tipo}:MovieInfo) => {
         let info = null;
         
         if(movieId) {
             switch(tipo){
                 case 'movie':
-                    info = await fetchMovieInfo({endpoint: `/movie/${movieId}?language=pt-BR&api_key=${API_KEY}`});
+                    info = await basicFetch({endpoint: `/movie/${movieId}?language=pt-BR&api_key=${API_KEY}`});
 
                 break;
                 case 'tv':
-                    info = await fetchMovieInfo({endpoint: `/tv/${movieId}?language=pt-BR&api_key=${API_KEY}`});
+                    info = await basicFetch({endpoint: `/tv/${movieId}?language=pt-BR&api_key=${API_KEY}`});
 
                 break;
             }
