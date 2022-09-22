@@ -5,7 +5,7 @@ type Genre =  {
     name: string;
 }
 
-export type Objeto = {
+export type FilmeInfo = {
     first_air_date: string;
     genres: Genre [];
     overview: string;
@@ -17,9 +17,9 @@ export type Objeto = {
 }
 
 type Item = {
-    item: Objeto ;
-
+    item: FilmeInfo;
 }
+
 
 export default ({item}:Item) => {
     

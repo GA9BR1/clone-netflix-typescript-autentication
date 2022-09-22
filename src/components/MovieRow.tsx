@@ -2,21 +2,11 @@ import React, {useState} from 'react';
 import styles from './movierow.module.scss'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Filme } from '../Tmdb';
 
 
 
-export type Objeto1 = {
-    results: {length: number; results: Function; map: Function;}
-    poster_path: string;
-    original_title: string;
-}
-
-export type MovieRow = {
-    items: Objeto1 ;
-    title: string;
-}
-
-export default ({title, items}:MovieRow) => {
+export default ({title, items}: {title: string, items: Filme []}) => {
     const [scrollX, setScrollX] = useState(0)
 
     const handleLeftArrow = () => {
@@ -30,7 +20,7 @@ export default ({title, items}:MovieRow) => {
 
     const handleRightArrow = () => {
         let x = scrollX - Math.round(window.innerWidth /2);
-        let listW = items.results.length * 150;
+        let listW = items.length * 150;
         if ((window.innerWidth - listW) > x) {
             x = (window.innerWidth - listW) - 60
 
@@ -51,11 +41,11 @@ export default ({title, items}:MovieRow) => {
             </div>
             <div className={styles.movieRowListArea}>
                 <div className={styles.movieRowList} style={{
-                    marginLeft: scrollX, width: items.results.length * 150
+                    marginLeft: scrollX, width: items.length * 150
                     }}>
-                    {items.results.length > 0 && items.results.map((item:Objeto1, key:number) =>(
-                        <div key={key} className={styles.movieRowItem}>
-                            <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`} alt={item.original_title}></img>
+                    {items.length > 0 && items.map((item) =>(
+                        <div key={item.id} className={styles.movieRowItem}>
+                            <img src={`https://image.tmdb.org/t/p/w300${item.poster_path}`} alt={item.name}></img>
                         </div>
                     ))}          
                 </div>
