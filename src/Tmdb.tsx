@@ -15,7 +15,7 @@ type MovieInfo = {
     movieId: number;
     tipo: string;
 }
-
+// dasdasdasdasfas
 type HomeList = {
     endpoint: string;
 }
