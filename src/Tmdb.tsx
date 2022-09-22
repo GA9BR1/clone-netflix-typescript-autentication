@@ -10,6 +10,7 @@ const API_BASE = 'https://api.themoviedb.org/3';
 - terror
 - romance
 - documentários
+-
 */
 type MovieInfo = {
     movieId: number;
