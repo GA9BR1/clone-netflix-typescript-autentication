@@ -11,19 +11,46 @@ const API_BASE = 'https://api.themoviedb.org/3';
 - romance
 - documentários
 */
-type MovieInfo = {
-    movieId: number;
-    tipo: string;
+
+export type Categoria = {
+    slug: string;
+    title: string;
+    items: Filme[];
 }
 
-type HomeList = {
-    endpoint: string;
+type Genre = {
+    name: string;
 }
 
-const basicFetch = async ({endpoint}:HomeList) => {
+type RespostaDoFilmeInfo = Filme & {
+    genres: Genre [];
+    number_of_seasons: number;
+}
+
+export type Filme = {
+    name: string;
+    id: number;
+    first_air_date: string;
+    poster_path: string;
+    overview: string;
+    vote_average: number;
+    backdrop_path: string;
+}
+
+export type RespostaDoFilme = {
+    results: Filme [];
+}
+
+const CategoriaFetch = async ({endpoint}: {endpoint: string}) => {
     const req = await fetch(`${API_BASE}${endpoint}`);
-    const json = await req.json();
-    return json
+    const response: RespostaDoFilme = await req.json();
+    return response.results;
+}
+
+const FetchInfo = async ({endpoint}: {endpoint: string}) => {
+    const req = await fetch(`${API_BASE}${endpoint}`);
+    const response: RespostaDoFilmeInfo = await req.json();
+    return response;
 }
 
 export default {
@@ -32,56 +59,56 @@ export default {
             {
                 slug: 'originals',
                 title: 'Originais do Netflix',
-                items: await basicFetch({endpoint: `/discover/tv?with_networks=213&language=pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint: `/discover/tv?with_networks=213&language=pt-BR&api_key=${API_KEY}`})
             },
             {
                 slug: 'trending',
                 title: 'Recomendados para Você',
-                items: await basicFetch({endpoint: `/trending/all/week?language=pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint: `/trending/all/week?language=pt-BR&api_key=${API_KEY}`})
             },
             {
                 slug: 'toprated',
                 title: 'Em alta',
-                items: await basicFetch({endpoint: `/movie/top_rated?language=pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint: `/movie/top_rated?language=pt-BR&api_key=${API_KEY}`})
             },
             {
                 slug: 'action',
                 title: 'Ação',
-                items: await basicFetch({endpoint: `/discover/movie?with_genres=28&language=pt-BR&pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint: `/discover/movie?with_genres=28&language=pt-BR&pt-BR&api_key=${API_KEY}`})
             },
             {
                 slug: 'comedy',
                 title: 'Comédia',
-                items: await basicFetch({endpoint: `/discover/movie?with_genres=35&language=pt-BR&pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint: `/discover/movie?with_genres=35&language=pt-BR&pt-BR&api_key=${API_KEY}`})
             },
             {
                 slug: 'horror',
                 title: 'Terror',
-                items: await basicFetch({endpoint:`/discover/movie?with_genres=27&language=pt-BR&pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint:`/discover/movie?with_genres=27&language=pt-BR&pt-BR&api_key=${API_KEY}`})
             },
             {
                 slug: 'romance',
                 title: 'Romance',
-                items: await basicFetch({endpoint: `/discover/movie?with_genres=10749&language=pt-BR&pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint: `/discover/movie?with_genres=10749&language=pt-BR&pt-BR&api_key=${API_KEY}`})
             },
             {
                 slug: 'Science Fiction',
                 title: 'Ficção Ciêntifica',
-                items: await basicFetch({endpoint: `/discover/movie?with_genres=878&language=pt-BR&pt-BR&api_key=${API_KEY}`})
+                items: await CategoriaFetch({endpoint: `/discover/movie?with_genres=878&language=pt-BR&pt-BR&api_key=${API_KEY}`})
             },
         ]
     },
-    getMovieInfo: async ({movieId, tipo}:MovieInfo) => {
+    getMovieInfo: async ({movieId, tipo}: {movieId: number, tipo: string}) => {
         let info = null;
         
         if(movieId) {
             switch(tipo){
                 case 'movie':
-                    info = await basicFetch({endpoint: `/movie/${movieId}?language=pt-BR&api_key=${API_KEY}`});
+                    info = await FetchInfo({endpoint: `/movie/${movieId}?language=pt-BR&api_key=${API_KEY}`});
 
                 break;
                 case 'tv':
-                    info = await basicFetch({endpoint: `/tv/${movieId}?language=pt-BR&api_key=${API_KEY}`});
+                    info = await FetchInfo({endpoint: `/tv/${movieId}?language=pt-BR&api_key=${API_KEY}`});
 
                 break;
             }
