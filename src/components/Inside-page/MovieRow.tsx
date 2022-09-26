@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from './movierow.module.scss'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Filme } from '../Tmdb';
+import { Filme } from './Tmdb';
 
 
 
