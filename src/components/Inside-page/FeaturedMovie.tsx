@@ -47,7 +47,7 @@ export default ({item}:Item) => {
                     <div className={styles.featuredInfo}>
                         <div className={styles.featuredPoints}>{item.vote_average} pontos</div>
                         <div className={styles.featuredYear}>{firstDate.getFullYear()}</div>
-                        <div className={styles.featuredSeasons}>{item.number_of_seasons} temproada{item.number_of_seasons != 1 ? 's' : ''}</div>
+                        <div className={styles.featuredSeasons}>{item.number_of_seasons} temporada{item.number_of_seasons != 1 ? 's' : ''}</div>
                     </div>
                     <div className={styles.featuredDescription}>{description}</div>
                     <div className={styles.featuredButtons}>
